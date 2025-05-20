@@ -12,7 +12,7 @@ const theme = useTheme();
 function toggleTheme() {
   const theme_value = theme.global.current.value.dark ? 'light' : 'dark'
   localStorage.setItem('gatekeeper:theme', theme_value);
-  theme.global.name.value = theme_value;
+  theme.global.name.value = themelet_value;
 }
 
 const localTheme = ref({

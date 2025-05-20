@@ -1,6 +1,5 @@
-version: "3.9"
 services:
-  gatekeeper.app:
+  laravel.test:
     build:
       context: ./vendor/laravel/sail/runtimes/8.3
       dockerfile: Dockerfile
@@ -28,6 +27,11 @@ services:
       - meilisearch
       - mailpit
       - selenium
+    env_file:
+      - .env
+      - .env.dusk
+
+
 
   mysql:
     image: mysql:8.0
