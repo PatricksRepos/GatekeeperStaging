@@ -1,4 +1,4 @@
-services:
+﻿services:
   laravel.test:
     build:
       context: ./vendor/laravel/sail/runtimes/8.3
@@ -29,6 +29,7 @@ services:
       - selenium
     env_file:
       - .env
+      - .env.testing
       - .env.dusk
 
 

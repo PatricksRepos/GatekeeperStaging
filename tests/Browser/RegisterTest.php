@@ -26,9 +26,10 @@ class RegisterTest extends DuskTestCase
         ->type('#input-6', 'password123')         // Vuetify password confirmation
         ->click('#switch-8')                      // accept terms switch
         ->pause(500)                              // wait for button to enable
-        ->click('button[type="submit"]')        // click submit
+        ->click('button[type="submit"]')          // click submit
         ->waitForLocation('/dashboard')           // wait for redirect
-        ->assertPathIs('/dashboard');             // assert location
+        ->assertPathIs('/dashboard')              // assert location
+        ->screenshot('after-register');           // ← save screenshot
     });
   }
 }
