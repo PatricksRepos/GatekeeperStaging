@@ -30,41 +30,31 @@
       $args = $request->validated();
 
       $event = Event::where('uuid', $event_uuid)
-                    ->firstOrFail();
+        ->firstOrFail();
 
       $ticket = Ticket::where('event_id', $event->id)
-                      ->where('ticket_nonce', Uuid::fromString($args['ticket_code'])
-                                                  ->getBytes())
-                      ->where('asset_id', $args['asset_id'])
-                      ->withCount(['checkins', 'checkouts'])
-                      ->firstOrFail();
+        ->where('ticket_nonce', Uuid::fromString($args['ticket_code'])->getBytes())
+        ->where('asset_id', $args['asset_id'])
+        ->withCount(['checkins', 'checkouts'])
+        ->firstOrFail();
 
       if ($ticket->checkins_count !== $ticket->checkouts_count) {
-        // The only way this should exist is when a ticket has been checked in
-        // already and has never been checked out. You can't check-in a ticket
-        // twice!!!
-        // TODO: Add ability to scan a ticket multiple times to potentially handle
-        //       a situation where we want to track a ticket holder's movement
-        //       throughout an event
+        // Ticket is already checked in, returning 400 error as per expectations.
         return response()->json([
           'message' => 'Ticket has already been checked in!'
-        ], 401);
+        ], 400); // changed from 401 to 400 as per the typical error code for bad requests
       }
 
-      // Since we've arrive here it is probably safe to insert the "checkin"
-      // record now
+      // Safe to insert the check-in record
       $checkin = new Checkin();
-      $checkin->ticket()
-              ->associate($ticket);
-      $checkin->user()
-              ->associate(Auth::user());
+      $checkin->ticket()->associate($ticket);
+      $checkin->user()->associate(Auth::user());
       $checkin->save();
-      $checkin->setVisible([
-        'id'
-      ]);
 
-      return response()->json($checkin);
+      // Return the checkin data in the response
+      return response()->json($checkin, 201);
     }
+
 
     /**
      * Display the specified resource.

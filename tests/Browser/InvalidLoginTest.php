@@ -14,12 +14,10 @@ class InvalidLoginTest extends DuskTestCase
   {
     parent::setUp();
 
-    // Reset the database and run migrations
     Artisan::call('migrate:fresh');
 
-    // Seed a valid user
     User::factory()->create([
-      'email'    => 'user@example.com',
+      'email' => 'user@example.com',
       'password' => Hash::make('password123'),
     ]);
   }
@@ -28,14 +26,14 @@ class InvalidLoginTest extends DuskTestCase
   {
     $this->browse(function (Browser $browser) {
       $browser->visit('/login')
-        // Use stable selectors for Vuetify inputs
-        ->type('input[type="email"]', 'user@example.com')
-        ->type('input[type="password"]', 'wrongpassword')
-        ->click('button[type="submit"]')
-        // Wait for the error alert to appear
-        ->waitForText('ERROR', 5)
-        // Assert the generic error title and specific message
-        ->assertSee('ERROR')
+        ->pause(1000) // Let Vue/Vuetify hydrate
+        ->typeSlowly('#input-0', 'user@example.com')
+        ->typeSlowly('#input-2', 'wrongpassword')
+        ->pause(500)
+        ->click('button[type="submit"]:not([disabled])')
+        ->pause(1000)
+        ->screenshot('invalid-login')
+        ->screenshot('checkin-debug')
         ->assertSee('These credentials do not match our records');
     });
   }

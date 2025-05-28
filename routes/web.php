@@ -40,11 +40,11 @@
   Route::get('image/{asset_key}', [ImageController::class, 'show'])
        ->name('image.show');
 
-  Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-  ])
+Route::middleware([
+  'auth',
+  config('jetstream.auth_session'),
+  'verified',
+])
        ->group(static function () {
          Route::get('/dashboard', static function (Request $request) {
            return Inertia::render('Dashboard');

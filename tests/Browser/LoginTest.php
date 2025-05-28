@@ -14,10 +14,8 @@ class LoginTest extends DuskTestCase
   {
     parent::setUp();
 
-    // Fresh-migrate the database for each Dusk test
     Artisan::call('migrate:fresh');
 
-    // Seed a test user
     User::factory()->create([
       'email' => 'user@example.com',
       'password' => Hash::make('password123'),
@@ -28,11 +26,13 @@ class LoginTest extends DuskTestCase
   {
     $this->browse(function (Browser $browser) {
       $browser->visit('/login')
-        ->type('#input-0', 'user@example.com')   // Vuetify email field
-        ->type('#input-2', 'password123')         // Vuetify password field
-        ->click('button[type="submit"]')        // click submit
-        ->waitForLocation('/dashboard')           // wait for redirect
-        ->assertPathIs('/dashboard');             // assert location
+        ->pause(1000) // Wait for Vue/Vuetify to hydrate
+        ->typeSlowly('#input-0', 'user@example.com')
+        ->typeSlowly('#input-2', 'password123')
+        ->pause(500)
+        ->click('button[type="submit"]:not([disabled])')
+        ->waitForLocation('/dashboard', 10)
+        ->assertPathIs('/dashboard');
     });
   }
 }

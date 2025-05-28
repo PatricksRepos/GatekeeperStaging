@@ -8,29 +8,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('tickets', static function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->foreignIdFor(Event::class);
-            $table->foreignIdFor(Policy::class);
-            $table->string('asset_id', 64);
-            $table->string('stake_key', 64);
-            $table->char('signature_nonce', 16)->charset('binary')->unique();
-            $table->char('ticket_nonce', 16)->charset('binary')->nullable()->unique();
-            $table->longText('signature')->nullable();
-        });
-    }
+  /**
+   * Run the migrations.
+   */
+  public function up(): void
+  {
+    Schema::create('tickets', static function (Blueprint $table) {
+      $table->id();
+      $table->timestamps();
+      $table->foreignIdFor(Event::class);
+      $table->foreignIdFor(Policy::class);
+      $table->string('asset_id', 64);
+      $table->string('stake_key', 64);
+      $table->char('signature_nonce', 16)->charset('binary')->unique();
+      $table->char('ticket_nonce', 16)->charset('binary')->nullable()->unique();
+      $table->longText('signature')->nullable();
+      $table->boolean('is_checked_in')->default(false);
+      $table->string('status')->default('pending');
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('tickets');
-    }
+    });
+  }
+
+  /**
+   * Reverse the migrations.
+   */
+  public function down(): void
+  {
+    Schema::dropIfExists('tickets');
+  }
 };
