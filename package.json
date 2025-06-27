@@ -3,20 +3,38 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "test:backend": "php artisan test",
+        "test": "mocha --require @babel/register --require module-alias/register --recursive tests/Unit/frontend/**/*.spec.mjs",
+        "test:all": "concurrently \"npm run test:backend\" \"npm run test:frontend\""
     },
     "devDependencies": {
+        "@babel/core": "^7.27.1",
+        "@babel/preset-env": "^7.27.2",
+        "@babel/register": "^7.27.1",
         "@inertiajs/vue3": "^1.0.0",
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/typography": "^0.5.2",
+        "@testing-library/jest-dom": "^6.6.3",
         "@vitejs/plugin-vue": "^4.5.0",
+        "@vue/cli-plugin-unit-jest": "^5.0.8",
+        "@vue/test-utils": "^2.4.6",
         "autoprefixer": "^10.4.7",
         "axios": "^1.6.4",
+        "babel-plugin-module-resolver": "^5.0.2",
+        "chai": "^4.5.0",
+        "concurrently": "^9.1.2",
+        "cypress": "^14.4.0",
         "laravel-vite-plugin": "^1.0.0",
+        "mocha": "^10.8.2",
+        "module-alias": "^2.2.3",
         "postcss": "^8.4.14",
         "tailwindcss": "^3.1.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.8.3",
         "vite": "^5.0.0",
-        "vue": "^3.2.31"
+        "vue": "^3.2.31",
+        "vue3-jest": "^27.0.0-alpha.1"
     },
     "dependencies": {
         "@emurgo/cardano-serialization-lib-asmjs": "^11.5.0",
@@ -31,5 +49,12 @@
         "styled-qr-code": "^1.0.0",
         "vue-chartjs": "^5.3.1",
         "vuetify": "^3.6.10"
+    },
+    "resolutions": {
+        "babel-jest": "27.0.0",
+        "vue3-jest": "27.0.0-alpha.3"
+    },
+    "_moduleAliases": {
+        "@": "../../src"
     }
 }

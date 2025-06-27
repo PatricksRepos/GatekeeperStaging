@@ -517,8 +517,13 @@ header {
         </template>
       </template>
     </v-container>
-    <v-dialog v-model="modal.connectWallet" persistent scrollable
-              max-width="512">
+    <v-dialog
+      class="wallet-dialog"
+      v-model="modal.connectWallet"
+      persistent
+      scrollable
+      max-width="512"
+    >
       <v-card>
         <v-card-title class="d-flex align-center">
           Connect Wallet

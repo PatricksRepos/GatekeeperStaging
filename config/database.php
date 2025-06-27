@@ -33,17 +33,15 @@ return [
     |
     */
 
-    'connections' => [
+  'connections' => [
+    'sqlite' => [
+      'driver' => 'sqlite',
+      'database' => env('DB_DATABASE', database_path('database.sqlite')),
+      'prefix' => '',
+    ],
 
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'url' => env('DATABASE_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-        ],
 
-        'mysql' => [
+  'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
